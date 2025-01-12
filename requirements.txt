@@ -1,0 +1,6 @@
+psycopg2==2.9.10
+python-dotenv==1.0.1
+slack_bolt==1.22.0
+slack_sdk==3.34.0
+SQLAlchemy==2.0.37
+typing_extensions==4.12.2
