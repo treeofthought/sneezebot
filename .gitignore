@@ -2,3 +2,5 @@
 venv
 __pycache__
 .DS_Store
+backfill-20250112.csv
+backfill-20250112.sql

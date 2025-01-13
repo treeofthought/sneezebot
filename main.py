@@ -8,12 +8,13 @@ from sqlalchemy.orm import Session
 from models import Sneezer, Sneeze
 
 DIGIT_ONLY = "^\d+$"
-NAME_SPACE_DIGIT = "[a-zA-Z]+ \d+"
+NAME_SPACE_DIGIT = "^[a-zA-Z]+ \d+$"
 
 load_dotenv()
 
 # Load DB engine
 url = os.environ.get('DATABASE_URL')
+# Heroku URL doesn't play nice w/ psycopg2
 url = url.replace('postgres://', 'postgresql://')
 engine = create_engine(url)
 
@@ -59,7 +60,10 @@ def digit_only(message, say, ack):
     if text == "0":
         say("Zero sneezes, huh wise guy?")
         return
-    say(f"Logging {text} sneezes for {sender.name}...")
+    grammar = 's'
+    if text == "1":
+        grammar = ''
+    say(f"Logging {text} sneeze{grammar} for {sender.name}...")
     for index in range(int(text)):
         add_sneeze_to_sneezer(sender)
     
@@ -68,6 +72,7 @@ def digit_only(message, say, ack):
 
 @app.message(re.compile(NAME_SPACE_DIGIT))
 def name_space_digit(message, say, ack):
+    ack()
     slack_user_id = message['user']
     sender = get_sneezer_by_slack_id(slack_user_id)
     if sender is None:
@@ -81,11 +86,19 @@ def name_space_digit(message, say, ack):
         say("Zero sneezes, huh wise guy?")
         return
 
+    if count > 25:
+        say("I don't log more than 25 sneezes at a time")
+        return
+
+    grammar = 's'
+    if count == 1:
+        grammar = ''
+
     sneezer = get_sneezer_by_name(name)
     if sneezer is None:
         say(f"I'm not tracking sneezes for {name}")
         return
-    say(f"{sender.name} logging {count} sneezes for {name}")
+    say(f"{sender.name} logging {count} sneeze{grammar} for {name}")
     for index in range(count):
         add_sneeze_to_sneezer(sneezer)
 
