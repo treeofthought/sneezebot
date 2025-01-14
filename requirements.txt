@@ -1,6 +1,13 @@
+exceptiongroup==1.2.2
+iniconfig==2.0.0
+packaging==24.2
+pluggy==1.5.0
 psycopg2==2.9.10
+pytest==8.3.4
+pytest-mock==3.14.0
 python-dotenv==1.0.1
 slack_bolt==1.22.0
 slack_sdk==3.34.0
 SQLAlchemy==2.0.37
+tomli==2.2.1
 typing_extensions==4.12.2
