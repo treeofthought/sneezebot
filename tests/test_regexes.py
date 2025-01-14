@@ -17,4 +17,3 @@ def test_name_space_digit():
     assert not regex.match('Name only')
     assert not regex.match('Name -1')
     assert not regex.match('Name 0.5')
-    
