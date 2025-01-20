@@ -4,3 +4,9 @@ __pycache__
 .DS_Store
 backfill-20250112.csv
 backfill-20250112.sql
+
+# R project stuff...
+.Rproj.user
+sneezebot.Rproj
+R/
+.Rhistory
