@@ -7,8 +7,8 @@ from sqlalchemy import select, func, create_engine
 from sqlalchemy.orm import Session
 from models import Sneezer, Sneeze
 
-DIGIT_ONLY = r"^\d+$"
-NAME_SPACE_DIGIT = r"^[a-zA-Z]+ \d+$"
+DIGIT_ONLY = r"^\d+\s*$"
+NAME_SPACE_DIGIT = r"^[a-zA-Z]+ \d+\s*$"
 
 load_dotenv()
 
