@@ -43,13 +43,27 @@ def add_sneeze_to_sneezer(sneezer):
         session.add(newSneeze)
         session.commit()
 
+def write_leaderboard_entry(logSneezer):
+    sneezeCount = logSneezer.sneeze_count
+    name = logSneezer.name
+    normalOutput = f'{name}: {sneezeCount}'
+    if sneezeCount == 69:
+        return f'{normalOutput} (Nice)'
+    elif sneezeCount == 420:
+        return f'{normalOutput} (Blaze it)'
+    elif sneezeCount == 29:
+        return f'{normalOutput} (29 PAYS)'
+    else:
+        return normalOutput
+    
+
 def produce_leaderboard():
     with Session(engine) as session:
         allSneezers = session.scalars(select(Sneezer)).all()
         sorted_sneezers = sorted(allSneezers, reverse=True) 
-        leaderboard = ["*Sneeze Leaderboard*"]
+        leaderboard = ["*Der Gesundesliga*"]
         for index, logSneezer in enumerate(sorted_sneezers):
-            leaderboard.append(f"{index + 1}. {logSneezer.name}: {logSneezer.sneeze_count}")
+            leaderboard.append(f"{index + 1}. {write_leaderboard_entry(logSneezer)}")
         return '\n'.join(leaderboard)
 
 def validate_tracking_params(count, sender, sneezer):
@@ -61,6 +75,12 @@ def validate_tracking_params(count, sender, sneezer):
         return "Don't recognize ya"
     if sneezer is None:
         return "I'm not tracking any sneezes for that name"
+
+@app.message("LEADERBOARD")
+def leaderboard(say, ack):
+    ack()
+    leaderboard = produce_leaderboard()
+    say(leaderboard)
 
 @app.message(re.compile(DIGIT_ONLY))
 def digit_only(message, say, ack):
