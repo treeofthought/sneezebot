@@ -9,6 +9,7 @@ from models import Sneezer, Sneeze
 
 DIGIT_ONLY = r"^\d+\s*$"
 NAME_SPACE_DIGIT = r"^[a-zA-Z]+ \d+\s*$"
+LEADERBOARD = r"^LEADERBOARD$"
 
 load_dotenv()
 
@@ -76,7 +77,7 @@ def validate_tracking_params(count, sender, sneezer):
     if sneezer is None:
         return "I'm not tracking any sneezes for that name"
 
-@app.message("LEADERBOARD")
+@app.message(re.compile(LEADERBOARD))
 def leaderboard(say, ack):
     ack()
     leaderboard = produce_leaderboard()
